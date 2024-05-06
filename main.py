@@ -86,10 +86,10 @@ ledGruen = Pin(16, Pin.OUT)
 ledBlau = Pin(17, Pin.OUT)
 
 #jalousie
-ledjalousie100 = Pin(4, Pin.OUT)
-ledjalousie75 = Pin(5, Pin.OUT)
-ledjalousie50 = Pin(6, Pin.OUT)
-ledjalousie25 = Pin(7, Pin.OUT)
+ledjalousie25 = Pin(4, Pin.OUT)
+ledjalousie50 = Pin(5, Pin.OUT)
+ledjalousie75 = Pin(6, Pin.OUT)
+ledjalousie100 = Pin(7, Pin.OUT)
 
 #I2C-Bus definieren
 i2c_sda = Pin(38)
@@ -117,11 +117,12 @@ alarmmanuell = ["Alarmanlage deaktiviert"]
 
 
 #Jalousie
-jalousiemanuell = ["0% Jalousie"]
+jalousiemanuell = [""]
 jalousieAutomatik = ["Jalousie Automatik Aus"]
 jalousieAutomatik_Wert = 4000
+jalousiehoehe = 0
 
-#Fenstert 
+#Fenster
 fenstermanuell = ["geschlossen"]
 fensterAutomatik = ["Fenster Automatik Aus"]
 fensterAutomatik_Wert = 40
@@ -143,9 +144,10 @@ zeit_alt_read = 0
 #-------------------------------------------------------------------------------------------------
 # Wifi Verbindung
 
-wlan_ssid = "BZTG-IoT"
-wlan_passwort = "WerderBremen24"
-
+# wlan_ssid = "BZTG-IoT"
+# wlan_passwort = "WerderBremen24"
+wlan_ssid = "FRITZ!Box 5530 R"
+wlan_passwort = "98755767599735437457"
 
 
 #Mit Wlan verbinden
@@ -167,7 +169,7 @@ print("--------------------------------------------------------------")
 #-------------------------------------------------------------------------------------------------
 # MQTT Broker Verbindung
 client_id = ubinascii.hexlify(machine.unique_id()) #Eindeutigen namen vergeben
-server = "192.168.1.108"  #MQTT Broker IP
+server = "192.168.178.76"  #MQTT Broker IP
 topic = "SMARTHOME_T&C"	#Topic einstellen
 
 c = MQTTClient(client_id, server) #MQTT Funktion in Variable "c" schreiben
@@ -252,34 +254,34 @@ while True:
 # Jalousie
     if jalousieAutomatik == "Jalousie Automatik Aus":
         if jalousiemanuell == "25% Jalousie":
-            ledjalousie100.on()
-            ledjalousie75.off()
+            ledjalousie25.on()
             ledjalousie50.off()
-            ledjalousie25.off()
+            ledjalousie75.off()
+            ledjalousie100.off()
             
         if jalousiemanuell == "50% Jalousie":
-            ledjalousie100.on()
-            ledjalousie75.on()
-            ledjalousie50.off()
-            ledjalousie25.off()
+            ledjalousie25.on()
+            ledjalousie50.on()
+            ledjalousie75.off()
+            ledjalousie100.off()
             
         if jalousiemanuell == "75% Jalousie":
-            ledjalousie100.on()
-            ledjalousie75.on()
+            ledjalousie25.on()
             ledjalousie50.on()
-            ledjalousie25.off()
+            ledjalousie75.on()
+            ledjalousie100.off()
 
         if jalousiemanuell == "100% Jalousie":
-            ledjalousie100.on()
-            ledjalousie75.on()
-            ledjalousie50.on()
             ledjalousie25.on()
+            ledjalousie50.on()
+            ledjalousie75.on()
+            ledjalousie100.on()
             
         if jalousiemanuell == "0% Jalousie":
-            ledjalousie100.off()
-            ledjalousie75.off()
-            ledjalousie50.off()
             ledjalousie25.off()
+            ledjalousie50.off()
+            ledjalousie75.off()
+            ledjalousie100.off()
             
     if jalousieAutomatik == "Jalousie Automatik Ein":
         jalousiemanuell = ""
@@ -311,7 +313,7 @@ while True:
     if not tastergedrueckt:
         tasterwar_aus = True
         
-# Steuerung
+# Alarmsteuerung
     if alarmmanuell == "Alarmanlage aktiviert" or tasterStatus == True:
         alarmEin = True
         alarmmanuell = []
@@ -337,7 +339,7 @@ while True:
 # Temperatur, Luftfeucht, Helligkeit messen
     zeit_now_temp = time.ticks_ms()
     if(time.ticks_diff(zeit_now_temp, zeit_alt_temp) > 5000):
-        temperatur_AHTX = round(sensorAhtx0.temperature *2) / 2		#Runden
+        temperatur_AHTX = round(sensorAhtx0.temperature)
         luftfeuchte_AHTX = round(sensorAhtx0.relative_humidity)
         helligkeit_BH1750 = round(helligkeit.measurement)
         zeit_alt_temp = time.ticks_ms()
@@ -367,7 +369,7 @@ while True:
              {"Fenster Status": fensterStatus},
             ]
     }
-    sorted_string = json.dumps(x_json)
+    sorted_string = json.dumps(x_json) # Codiert die Nachricht in ein JSON-String
 #-------------------------------------------------------------------------------------------------    
 # Nachricht senden an MQTT Broker
     zeit_now_mqtt = time.ticks_ms()

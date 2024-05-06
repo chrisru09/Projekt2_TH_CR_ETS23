@@ -1,0 +1,2181 @@
+[
+    {
+        "id": "5a8fe4a778cdae67",
+        "type": "tab",
+        "label": "Flow Projekt",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "45a78910e45ef0ac",
+        "type": "mqtt in",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "topic": "SMARTHOME_T&C",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "32b1348dfb32332c",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 80,
+        "wires": [
+            [
+                "910f20035405bd1f"
+            ]
+        ]
+    },
+    {
+        "id": "910f20035405bd1f",
+        "type": "json",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 370,
+        "y": 80,
+        "wires": [
+            [
+                "fbcaa2efd1365274"
+            ]
+        ]
+    },
+    {
+        "id": "a5118f0c5ed8e03c",
+        "type": "change",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "Alarmanlage ",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "Alarmanlage aktiviert",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 710,
+        "y": 200,
+        "wires": [
+            [
+                "053afd3374c50961"
+            ]
+        ]
+    },
+    {
+        "id": "d2f4510f9b4336e5",
+        "type": "change",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "Alarmanlage",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "Alarmanlage deaktiviert",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 710,
+        "y": 340,
+        "wires": [
+            [
+                "3d01dd7af9e3c518"
+            ]
+        ]
+    },
+    {
+        "id": "f7e764a447beee38",
+        "type": "mqtt out",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "topic": "SMARTHOME_T&C",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "32b1348dfb32332c",
+        "x": 2060,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "649aea16455e82a7",
+        "type": "mqtt in",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "topic": "SMARTHOME_T&C",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "32b1348dfb32332c",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 2220,
+        "wires": [
+            [
+                "a1707f59aa8d05d4"
+            ]
+        ]
+    },
+    {
+        "id": "cc4316857fd4664b",
+        "type": "function",
+        "z": "5a8fe4a778cdae67",
+        "name": "Raumtemperatur auslesen",
+        "func": "// JSON-String parsen\nvar jsonData = JSON.parse(msg.payload);\n\n// JSON-String parsen\nvar jsonData = JSON.parse(msg.payload);\n\n// Überprüfen, ob das Array Sensorwerte vorhanden ist\nif (jsonData.Sensorwerte && Array.isArray(jsonData.Sensorwerte)) {\n    // Durchsuche das Array nach dem Objekt mit der Temperatur\n    var temperaturObj = jsonData.Sensorwerte.find(sensor => sensor.hasOwnProperty('Temperatur'));\n\n    // Überprüfen, ob ein Objekt mit der Temperatur gefunden wurde\n    if (temperaturObj) {\n        // Extrahiere die Temperatur\n        var temperatur = temperaturObj.Temperatur;\n\n        // Setze die Nachricht auf die Temperatur\n        msg.payload = temperatur;\n    } else {\n        // Wenn keine Temperatur gefunden wurde, setze die Nachricht auf eine Fehlermeldung\n        msg.payload = \"Temperatur nicht verfügbar\";\n    }\n} else {\n    // Wenn keine Sensorwerte vorhanden sind, setze die Nachricht auf eine Fehlermeldung\n    msg.payload = \"Sensorwerte nicht verfügbar\";\n}\n\n// Gib die Nachricht zurück\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 2220,
+        "wires": [
+            [
+                "75662a3012ac90b4",
+                "8d7e95f40f8f3b75"
+            ]
+        ]
+    },
+    {
+        "id": "a1707f59aa8d05d4",
+        "type": "json",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 350,
+        "y": 2220,
+        "wires": [
+            [
+                "cc4316857fd4664b"
+            ]
+        ]
+    },
+    {
+        "id": "fbcaa2efd1365274",
+        "type": "function",
+        "z": "5a8fe4a778cdae67",
+        "name": "Alarm true/false",
+        "func": "// JSON-String parsen\nvar jsonData = JSON.parse(msg.payload);\n\n// Überprüfen, ob das Array Sensorwerte vorhanden ist\nif (jsonData.Sensorwerte && Array.isArray(jsonData.Sensorwerte)) {\n    // Durchsuche das Array nach dem Objekt mit dem Alarm\n    var alarmObj = jsonData.Sensorwerte.find(sensor => sensor.hasOwnProperty('Alarm'));\n\n    // Überprüfen, ob ein Objekt mit dem Alarm gefunden wurde und ob der Alarm true ist\n    if (alarmObj && alarmObj.Alarm === true) {\n        // Überprüfen, ob der Alarm schon ausgelöst wurde\n        if (!flow.get('alarmAusgelöst')) {\n            // Setze die Nachricht auf true\n            msg.payload = true;\n            // Setze die Flagge, dass der Alarm ausgelöst wurde\n            flow.set('alarmAusgelöst', true);\n            // Gib die Nachricht zurück\n            return msg;\n        }\n    } else {\n        // Wenn der Alarm nicht true ist, setze die Flagge zurück\n        flow.set('alarmAusgelöst', false);\n    }\n}\n\n// Wenn kein Alarm true ist oder das Array Sensorwerte nicht vorhanden ist, gibt die Function-Node keine Nachricht zurück\nreturn null;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 80,
+        "wires": [
+            [
+                "9f289f2a17083b1a"
+            ]
+        ]
+    },
+    {
+        "id": "9f289f2a17083b1a",
+        "type": "change",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "Alarmanlage",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "Bewegung erkannt",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 750,
+        "y": 100,
+        "wires": [
+            [
+                "d61e25901cb4a5e6",
+                "860f2057eb7295dd"
+            ]
+        ]
+    },
+    {
+        "id": "be7f05e686a6cbf9",
+        "type": "mqtt in",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "topic": "SMARTHOME_T&C",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "32b1348dfb32332c",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 2080,
+        "wires": [
+            [
+                "2ab6cccb863e5ca0"
+            ]
+        ]
+    },
+    {
+        "id": "2ab6cccb863e5ca0",
+        "type": "json",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 350,
+        "y": 2080,
+        "wires": [
+            [
+                "7ac295d619297b02"
+            ]
+        ]
+    },
+    {
+        "id": "d61e25901cb4a5e6",
+        "type": "ui_led",
+        "z": "5a8fe4a778cdae67",
+        "order": 4,
+        "group": "fc947f7f387b5516",
+        "width": 0,
+        "height": 0,
+        "label": "",
+        "labelPlacement": "left",
+        "labelAlignment": "left",
+        "colorForValue": [
+            {
+                "color": "#ff0000",
+                "value": "{   \"Status\": \"Alarmanlage aktiviert\" }",
+                "valueType": "json"
+            },
+            {
+                "color": "#008000",
+                "value": "{   \"Status\": \"Alarmanlage deaktiviert\" }",
+                "valueType": "json"
+            },
+            {
+                "color": "#002b80",
+                "value": "Bewegung erkannt",
+                "valueType": "str"
+            }
+        ],
+        "allowColorForValueInMessage": false,
+        "shape": "circle",
+        "showGlow": true,
+        "name": "",
+        "x": 2290,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "6f83ae9df6f0c412",
+        "type": "ui_led",
+        "z": "5a8fe4a778cdae67",
+        "order": 5,
+        "group": "0cf9b7d9d5a99d24",
+        "width": 0,
+        "height": 0,
+        "label": "Fenster Wohnzimmer",
+        "labelPlacement": "left",
+        "labelAlignment": "left",
+        "colorForValue": [
+            {
+                "color": "#ff0000",
+                "value": "true",
+                "valueType": "bool"
+            },
+            {
+                "color": "#008000",
+                "value": "false",
+                "valueType": "bool"
+            }
+        ],
+        "allowColorForValueInMessage": false,
+        "shape": "circle",
+        "showGlow": true,
+        "name": "",
+        "x": 1270,
+        "y": 2460,
+        "wires": []
+    },
+    {
+        "id": "67c2f24ed4052784",
+        "type": "ui_button",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "group": "a3696d909edbf986",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "O%",
+        "tooltip": "",
+        "color": "black",
+        "bgcolor": "white",
+        "className": "",
+        "icon": "",
+        "payload": "{   \"Befehl\": \"0% Jalousie\",   \"Raum\": \"Wohnzimmer\" }",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 90,
+        "y": 580,
+        "wires": [
+            [
+                "f7e764a447beee38"
+            ]
+        ]
+    },
+    {
+        "id": "d4d5e084ac55b176",
+        "type": "ui_button",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "group": "a3696d909edbf986",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "25%",
+        "tooltip": "",
+        "color": "black",
+        "bgcolor": "white",
+        "className": "",
+        "icon": "",
+        "payload": "{   \"Befehl\": \"25% Jalousie\",   \"Raum\": \"Wohnzimmer\" }",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 90,
+        "y": 640,
+        "wires": [
+            [
+                "f7e764a447beee38"
+            ]
+        ]
+    },
+    {
+        "id": "69da633b635627da",
+        "type": "ui_button",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "group": "fc947f7f387b5516",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Aktivieren",
+        "tooltip": "Shows Notification",
+        "color": "",
+        "bgcolor": "red",
+        "className": "",
+        "icon": "fa-lock",
+        "payload": "{   \"Status\": \"Alarmanlage aktiviert\" }",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 100,
+        "y": 220,
+        "wires": [
+            [
+                "a5118f0c5ed8e03c",
+                "d61e25901cb4a5e6",
+                "f7e764a447beee38"
+            ]
+        ]
+    },
+    {
+        "id": "29f7dcaf0d5c80dd",
+        "type": "ui_button",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "group": "fc947f7f387b5516",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Deaktivieren",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "green",
+        "className": "",
+        "icon": "fa-unlock  ",
+        "payload": "{   \"Status\": \"Alarmanlage deaktiviert\" }",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 110,
+        "y": 320,
+        "wires": [
+            [
+                "d2f4510f9b4336e5",
+                "d61e25901cb4a5e6",
+                "f7e764a447beee38"
+            ]
+        ]
+    },
+    {
+        "id": "5a48f9c26e36eca7",
+        "type": "ui_button",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "group": "a3696d909edbf986",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "50%",
+        "tooltip": "",
+        "color": "black",
+        "bgcolor": "white",
+        "className": "",
+        "icon": "",
+        "payload": "{   \"Befehl\": \"50% Jalousie\",   \"Raum\": \"Wohnzimmer\" }",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 90,
+        "y": 680,
+        "wires": [
+            [
+                "f7e764a447beee38"
+            ]
+        ]
+    },
+    {
+        "id": "5ba3c8bed9bd8a78",
+        "type": "ui_button",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "group": "a3696d909edbf986",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "75%",
+        "tooltip": "",
+        "color": "black",
+        "bgcolor": "white",
+        "className": "",
+        "icon": "",
+        "payload": "{   \"Befehl\": \"75% Jalousie\",   \"Raum\": \"Wohnzimmer\" }",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 90,
+        "y": 720,
+        "wires": [
+            [
+                "f7e764a447beee38"
+            ]
+        ]
+    },
+    {
+        "id": "e6fd8f8f9ee43a76",
+        "type": "ui_button",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "group": "a3696d909edbf986",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "100%",
+        "tooltip": "",
+        "color": "black",
+        "bgcolor": "white",
+        "className": "",
+        "icon": "",
+        "payload": "{   \"Befehl\": \"100% Jalousie\",   \"Raum\": \"Wohnzimmer\" }",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 90,
+        "y": 780,
+        "wires": [
+            [
+                "f7e764a447beee38"
+            ]
+        ]
+    },
+    {
+        "id": "d85da453fb94a893",
+        "type": "ui_button",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "group": "0cf9b7d9d5a99d24",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Auf",
+        "tooltip": "",
+        "color": "white",
+        "bgcolor": "red",
+        "className": "",
+        "icon": "",
+        "payload": "{   \"Raum\": \"Wohnzimmer\",   \"Fenster\": \"geoeffnet\" }",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 150,
+        "y": 1460,
+        "wires": [
+            [
+                "f7e764a447beee38"
+            ]
+        ]
+    },
+    {
+        "id": "be038acadfc743c0",
+        "type": "ui_button",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "group": "0cf9b7d9d5a99d24",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Zu",
+        "tooltip": "",
+        "color": "white",
+        "bgcolor": "green",
+        "className": "",
+        "icon": "",
+        "payload": "{   \"Raum\": \"Wohnzimmer\",   \"Fenster\": \"geschlossen\" }",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 150,
+        "y": 1500,
+        "wires": [
+            [
+                "f7e764a447beee38"
+            ]
+        ]
+    },
+    {
+        "id": "9d3aeebd8ebda3b5",
+        "type": "ui_switch",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "label": "Wohnzimmer TV Wand",
+        "tooltip": "",
+        "group": "64aae649be9e7ccc",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 190,
+        "y": 1660,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "75467097eb86ca7b",
+        "type": "ui_switch",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "label": "Wohnzimmer Esstisch",
+        "tooltip": "",
+        "group": "64aae649be9e7ccc",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "true",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 180,
+        "y": 1620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0ba1a1074f924387",
+        "type": "ui_switch",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "label": "Wohnzimmer Indirekte Beleuchtung",
+        "tooltip": "",
+        "group": "64aae649be9e7ccc",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 220,
+        "y": 1700,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ef91c74a74d738f9",
+        "type": "ui_text",
+        "z": "5a8fe4a778cdae67",
+        "group": "194b923406906b54",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Außentemperatur",
+        "format": "{{11}}°C",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 190,
+        "y": 1820,
+        "wires": []
+    },
+    {
+        "id": "42f0f8d88746a3f5",
+        "type": "ui_text",
+        "z": "5a8fe4a778cdae67",
+        "group": "194b923406906b54",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Boiler Temperatur",
+        "format": "{{60}}°C",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 190,
+        "y": 1860,
+        "wires": []
+    },
+    {
+        "id": "d2fecca412607616",
+        "type": "ui_text",
+        "z": "5a8fe4a778cdae67",
+        "group": "194b923406906b54",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Vorlauf Temperatur",
+        "format": "{{40}}°C",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 190,
+        "y": 1900,
+        "wires": []
+    },
+    {
+        "id": "efe5816296f454e5",
+        "type": "ui_text",
+        "z": "5a8fe4a778cdae67",
+        "group": "194b923406906b54",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Rücklauf Temperatur",
+        "format": "{{18}}°C",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 200,
+        "y": 1940,
+        "wires": []
+    },
+    {
+        "id": "75662a3012ac90b4",
+        "type": "ui_gauge",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "group": "c407864ba5aef9cc",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Raumtemperatur",
+        "label": "",
+        "format": "{{value | number:0}}°C",
+        "min": "0",
+        "max": "30",
+        "colors": [
+            "#0006b3",
+            "#e6e600",
+            "#cb3a57"
+        ],
+        "seg1": "10",
+        "seg2": "20",
+        "diff": false,
+        "className": "",
+        "x": 810,
+        "y": 2200,
+        "wires": []
+    },
+    {
+        "id": "8d7e95f40f8f3b75",
+        "type": "ui_chart",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "group": "c407864ba5aef9cc",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "label": "Raumtemperatur",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 810,
+        "y": 2260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "053afd3374c50961",
+        "type": "ui_toast",
+        "z": "5a8fe4a778cdae67",
+        "position": "top right",
+        "displayTime": "3",
+        "highlight": "red",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "",
+        "topic": "",
+        "name": "",
+        "x": 980,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "3d01dd7af9e3c518",
+        "type": "ui_toast",
+        "z": "5a8fe4a778cdae67",
+        "position": "top right",
+        "displayTime": "3",
+        "highlight": "green",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "",
+        "topic": "",
+        "name": "",
+        "x": 1000,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "7ac295d619297b02",
+        "type": "function",
+        "z": "5a8fe4a778cdae67",
+        "name": "Co2 Gehalt auslesen",
+        "func": "// JSON-String parsen\nvar jsonData = JSON.parse(msg.payload);\n\n// Überprüfen, ob das Array Sensorwerte vorhanden ist und mindestens ein Element enthält\nif (jsonData.Sensorwerte && jsonData.Sensorwerte.length > 0) {\n    // Durchsuche das Array nach dem Objekt mit dem CO2-Gehalt\n    var co2Obj = jsonData.Sensorwerte.find(sensor => sensor.hasOwnProperty('CO2-Gehalt'));\n\n    // Überprüfen, ob ein Objekt mit dem CO2-Gehalt gefunden wurde\n    if (co2Obj) {\n        // Extrahiere den CO2-Gehalt\n        var co2Gehalt = co2Obj['CO2-Gehalt'];\n\n        // Setze die Nachricht auf den CO2-Gehalt\n        msg.payload = co2Gehalt;\n\n        // Sende die Nachricht an das Dashboard (angenommen, die Node-RED-Dashboard-Komponente heißt \"ui_text_input\")\n        return [{payload: co2Gehalt, topic: \"ui_text_input\"}];\n    } else {\n        // Wenn kein CO2-Gehalt gefunden wurde, setze die Nachricht auf eine Fehlermeldung\n        msg.payload = \"CO2-Gehalt nicht verfügbar\";\n    }\n} else {\n    // Wenn keine Sensorwerte vorhanden sind, setze die Nachricht auf eine Fehlermeldung\n    msg.payload = \"Sensorwerte nicht verfügbar\";\n}\n\n// Gib die Nachricht zurück\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 2080,
+        "wires": [
+            [
+                "1a2e55cfda72d046",
+                "8583a6f76ed464c0"
+            ]
+        ]
+    },
+    {
+        "id": "1a2e55cfda72d046",
+        "type": "ui_text",
+        "z": "5a8fe4a778cdae67",
+        "group": "194b923406906b54",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "CO2- Gehalt",
+        "format": "{{msg.payload}}ppm",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 910,
+        "y": 2020,
+        "wires": []
+    },
+    {
+        "id": "8583a6f76ed464c0",
+        "type": "ui_chart",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "group": "194b923406906b54",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "label": "CO2-Gehalt",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 870,
+        "y": 2100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7b5f5d7024a9e3bf",
+        "type": "ui_switch",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "label": "ON/OFF",
+        "tooltip": "",
+        "group": "d0e898639d183d04",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "{   \"Fenster_Auto\": \"Fenster Automatik Ein\" }",
+        "onvalueType": "json",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "{   \"Fenster_Auto\": \"Fenster Automatik Aus\" }",
+        "offvalueType": "json",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 160,
+        "y": 1400,
+        "wires": [
+            [
+                "f7e764a447beee38"
+            ]
+        ]
+    },
+    {
+        "id": "6ad4aeeccadf5b30",
+        "type": "ui_switch",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "label": "ON/OFF",
+        "tooltip": "",
+        "group": "5ccc3d4328e061d7",
+        "order": 10,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "{   \"Jalousie_Auto\": \"Jalousie Automatik Ein\" }",
+        "onvalueType": "json",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "{   \"Jalousie_Auto\": \"Jalousie Automatik Aus\" }",
+        "offvalueType": "json",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 100,
+        "y": 840,
+        "wires": [
+            [
+                "f7e764a447beee38"
+            ]
+        ]
+    },
+    {
+        "id": "a1619b2c8d656901",
+        "type": "ui_form",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "label": "Lux Wert (100-500)",
+        "group": "5ccc3d4328e061d7",
+        "order": 10,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "",
+                "value": "Lux Wohnzimmer",
+                "type": "text",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "Lux Wohnzimmer": ""
+        },
+        "payload": "",
+        "submit": "OK",
+        "cancel": "cancel",
+        "topic": "payload",
+        "topicType": "msg",
+        "splitLayout": "",
+        "className": "",
+        "x": 110,
+        "y": 960,
+        "wires": [
+            [
+                "12a488ca0d9af751"
+            ]
+        ]
+    },
+    {
+        "id": "911fa73e46490bcd",
+        "type": "switch",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "btwn",
+                "v": "100",
+                "vt": "num",
+                "v2": "500",
+                "v2t": "num"
+            },
+            {
+                "t": "btwn",
+                "v": "0",
+                "vt": "num",
+                "v2": "99",
+                "v2t": "num"
+            },
+            {
+                "t": "btwn",
+                "v": "500",
+                "vt": "num",
+                "v2": "100000",
+                "v2t": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 490,
+        "y": 960,
+        "wires": [
+            [
+                "e620f06e25fd9895"
+            ],
+            [
+                "d52e6c04289d4715"
+            ],
+            [
+                "d52e6c04289d4715"
+            ]
+        ]
+    },
+    {
+        "id": "12a488ca0d9af751",
+        "type": "function",
+        "z": "5a8fe4a778cdae67",
+        "name": "Pruefen ob Zahl",
+        "func": "// Den Wert extrahieren\nvar luxWohnzimmerValue = parseInt(msg.payload[\"Lux Wohnzimmer\"]);\n\n// Überprüfen, ob der Wert eine gültige Zahl ist\nif (!isNaN(luxWohnzimmerValue)) {\n    // Wenn ja, senden Sie die Zahl als Payload\n    return { payload: luxWohnzimmerValue };\n} else {\n    // Wenn nicht, senden Sie eine Fehlermeldung\n    return { payload: \"Fehler: Der Wert ist keine gültige Zahl.\" };\n}\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 960,
+        "wires": [
+            [
+                "911fa73e46490bcd"
+            ]
+        ]
+    },
+    {
+        "id": "d594db785ac405f1",
+        "type": "ui_toast",
+        "z": "5a8fe4a778cdae67",
+        "position": "dialog",
+        "displayTime": "3",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 1,
+        "ok": "Ok",
+        "cancel": "Cancel",
+        "raw": false,
+        "className": "",
+        "topic": "",
+        "name": "",
+        "x": 1050,
+        "y": 980,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d52e6c04289d4715",
+        "type": "change",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "Fehler",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "Wert nicht möglich",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 730,
+        "y": 1000,
+        "wires": [
+            [
+                "d594db785ac405f1"
+            ]
+        ]
+    },
+    {
+        "id": "e620f06e25fd9895",
+        "type": "function",
+        "z": "5a8fe4a778cdae67",
+        "name": "Variable zu Lux Wert hinzugeben",
+        "func": "// Den variablen Zahlenwert für das Wohnzimmer-Jalousie erhalten\nvar jalousieWohnzimmerValue = msg.payload; // Annahme: Die Nachricht enthält den Zahlenwert für die Jalousie im Wohnzimmer\n\n// Überprüfen, ob der empfangene Wert eine gültige Zahl ist\nif (!isNaN(jalousieWohnzimmerValue)) {\n    // Kombiniere den String \"Jalousie Wohnzimmer\" mit dem variablen Zahlenwert\n    var combinedString = \"Jalousie_Auto_Wert: \" + jalousieWohnzimmerValue;\n\n    // Erstelle ein JavaScript-Objekt mit dem kombinierten String\n    var jsonOutput = {\n        \"Jalousie_Auto_Wert\": jalousieWohnzimmerValue\n    };\n\n    // Konvertiere das JavaScript-Objekt in einen JSON-String\n    var jsonString = JSON.stringify(jsonOutput);\n\n    // Gib den JSON-String als Payload zurück\n    return { payload: jsonString };\n} else {\n    // Wenn der empfangene Wert keine gültige Zahl ist, sende eine Fehlermeldung\n    return { payload: \"Fehler: Der empfangene Wert ist keine gültige Zahl.\" };\n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 920,
+        "wires": [
+            [
+                "f7e764a447beee38"
+            ]
+        ]
+    },
+    {
+        "id": "de399e4cf3a99eb2",
+        "type": "mqtt in",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "topic": "SMARTHOME_T&C",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "32b1348dfb32332c",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 1010,
+        "y": 460,
+        "wires": [
+            [
+                "bf8f455c1d4922f7"
+            ]
+        ]
+    },
+    {
+        "id": "9ee2248d8d007445",
+        "type": "function",
+        "z": "5a8fe4a778cdae67",
+        "name": "Alarmstatus überpruefen",
+        "func": "// JSON-String parsen\nvar jsonData = JSON.parse(msg.payload);\n\n// Überprüfen, ob das Array Sensorwerte vorhanden ist und mindestens ein Element enthält\nif (jsonData.Sensorwerte && jsonData.Sensorwerte.length > 0) {\n    // Durchlaufe das Array Sensorwerte, um den Alarmstatus zu finden\n    for (var i = 0; i < jsonData.Sensorwerte.length; i++) {\n        // Überprüfen auf Alarmstatus\n        if (jsonData.Sensorwerte[i].hasOwnProperty('Alarm Status')) {\n            var alarmStatus = jsonData.Sensorwerte[i]['Alarm Status'];\n            // Sende den Alarmstatus an das Dashboard\n            return { payload: alarmStatus, topic: \"ui_text_input_alarmstatus\" };\n        }\n    }\n    // Wenn kein Alarmstatus gefunden wurde, setze die Nachricht auf eine Fehlermeldung\n    msg.payload = \"Alarmstatus nicht verfügbar\";\n} else {\n    // Wenn keine Sensorwerte vorhanden sind, setze die Nachricht auf eine Fehlermeldung\n    msg.payload = \"Sensorwerte nicht verfügbar\";\n}\n\n// Gib die Nachricht zurück\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1510,
+        "y": 380,
+        "wires": [
+            [
+                "b8b8c72097302b22"
+            ]
+        ]
+    },
+    {
+        "id": "bf8f455c1d4922f7",
+        "type": "json",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 1270,
+        "y": 380,
+        "wires": [
+            [
+                "9ee2248d8d007445"
+            ]
+        ]
+    },
+    {
+        "id": "b8b8c72097302b22",
+        "type": "switch",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "true"
+            },
+            {
+                "t": "false"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1730,
+        "y": 340,
+        "wires": [
+            [
+                "295d1b8f01746f8f"
+            ],
+            [
+                "0ab9042523869cc6"
+            ]
+        ]
+    },
+    {
+        "id": "295d1b8f01746f8f",
+        "type": "change",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{   \"Status\": \"Alarmanlage aktiviert\" }",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1930,
+        "y": 320,
+        "wires": [
+            [
+                "d61e25901cb4a5e6"
+            ]
+        ]
+    },
+    {
+        "id": "0ab9042523869cc6",
+        "type": "change",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{   \"Status\": \"Alarmanlage deaktiviert\" }",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1970,
+        "y": 400,
+        "wires": [
+            [
+                "d61e25901cb4a5e6"
+            ]
+        ]
+    },
+    {
+        "id": "98d88abdd27888fa",
+        "type": "ui_form",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "label": "Temperaturgrenzwert (0-30°C) ",
+        "group": "d0e898639d183d04",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "",
+                "value": "Temperatur",
+                "type": "text",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "Temperatur": ""
+        },
+        "payload": "",
+        "submit": "ok",
+        "cancel": "cancel",
+        "topic": "topic",
+        "topicType": "msg",
+        "splitLayout": "",
+        "className": "",
+        "x": 210,
+        "y": 2840,
+        "wires": [
+            [
+                "37b24e2a133ebdc9"
+            ]
+        ]
+    },
+    {
+        "id": "b67276de020f93a3",
+        "type": "switch",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "btwn",
+                "v": "0",
+                "vt": "num",
+                "v2": "30",
+                "v2t": "num"
+            },
+            {
+                "t": "btwn",
+                "v": "30",
+                "vt": "num",
+                "v2": "99999999",
+                "v2t": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 870,
+        "y": 2860,
+        "wires": [
+            [
+                "3a4d3fc77b7d1e58"
+            ],
+            [
+                "38d3954969b57442"
+            ]
+        ]
+    },
+    {
+        "id": "eb5bf17fa3f1a7d3",
+        "type": "ui_form",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "label": "Co2 Grenzwert (500-4000ppm)",
+        "group": "d0e898639d183d04",
+        "order": 2,
+        "width": "6",
+        "height": "4",
+        "options": [
+            {
+                "label": "",
+                "value": "Co2 Gehalt",
+                "type": "text",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "Co2 Gehalt": ""
+        },
+        "payload": "",
+        "submit": "ok",
+        "cancel": "cancel",
+        "topic": "topic",
+        "topicType": "msg",
+        "splitLayout": "",
+        "className": "",
+        "x": 210,
+        "y": 3180,
+        "wires": [
+            [
+                "114650f05636f801"
+            ]
+        ]
+    },
+    {
+        "id": "dac1cb6baadccfa1",
+        "type": "function",
+        "z": "5a8fe4a778cdae67",
+        "name": "Pruefen ob Zahl",
+        "func": "\n// JSON-String parsen\nvar jsonData = JSON.parse(msg.payload);\n\n// Überprüfen, ob der Wert eine gültige Zahl ist\nvar temperatur = parseFloat(jsonData.Temperatur);\nif (!isNaN(temperatur)) {\n    // Wenn der Wert eine gültige Zahl ist, sende ihn\n    return { payload: temperatur };\n} else {\n    // Wenn der Wert keine gültige Zahl ist, sende \"false\"\n    return { payload: false };\n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 720,
+        "y": 2860,
+        "wires": [
+            [
+                "b67276de020f93a3"
+            ]
+        ]
+    },
+    {
+        "id": "37b24e2a133ebdc9",
+        "type": "json",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 550,
+        "y": 2840,
+        "wires": [
+            [
+                "dac1cb6baadccfa1"
+            ]
+        ]
+    },
+    {
+        "id": "38d3954969b57442",
+        "type": "change",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "Fehler",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "Falscher Wert",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1030,
+        "y": 2960,
+        "wires": [
+            [
+                "da3d795f2fbed89f"
+            ]
+        ]
+    },
+    {
+        "id": "da3d795f2fbed89f",
+        "type": "ui_toast",
+        "z": "5a8fe4a778cdae67",
+        "position": "dialog",
+        "displayTime": "3",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 1,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "",
+        "topic": "",
+        "name": "",
+        "x": 1230,
+        "y": 2960,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3a4d3fc77b7d1e58",
+        "type": "function",
+        "z": "5a8fe4a778cdae67",
+        "name": "Standort zum Temperaturwert hinzugeben",
+        "func": "// Den variablen Zahlenwert für das Wohnzimmer-Fenster erhalten\nvar fensterAutoWert = msg.payload; // Annahme: Die Nachricht enthält den Zahlenwert für das Fenster im Automatikmodus\n\n// Überprüfen, ob der empfangene Wert eine gültige Zahl ist\nif (!isNaN(fensterAutoWert)) {\n    // Kombiniere den String \"Fenster_Auto_Wert\" mit dem variablen Zahlenwert\n    var combinedString = \"Fenster_Auto_Wert: \" + fensterAutoWert;\n\n    // Erstelle ein JavaScript-Objekt mit dem kombinierten String\n    var jsonOutput = {\n        \"Fenster_Auto_Wert\": fensterAutoWert\n    };\n\n    // Konvertiere das JavaScript-Objekt in einen JSON-String\n    var jsonString = JSON.stringify(jsonOutput);\n\n    // Gib den JSON-String als Payload zurück\n    return { payload: jsonString };\n} else {\n    // Wenn der empfangene Wert keine gültige Zahl ist, sende eine Fehlermeldung\n    return { payload: \"Fehler: Der empfangene Wert ist keine gültige Zahl.\" };\n}\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1180,
+        "y": 2820,
+        "wires": [
+            [
+                "1a178cc7b722f750"
+            ]
+        ]
+    },
+    {
+        "id": "114650f05636f801",
+        "type": "json",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 530,
+        "y": 3180,
+        "wires": [
+            [
+                "8b2accb24155f563"
+            ]
+        ]
+    },
+    {
+        "id": "1a178cc7b722f750",
+        "type": "mqtt out",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "topic": "SMARTHOME_T&C",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "32b1348dfb32332c",
+        "x": 1580,
+        "y": 2960,
+        "wires": []
+    },
+    {
+        "id": "0a39ab601f5bbe9c",
+        "type": "switch",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "btwn",
+                "v": "500",
+                "vt": "num",
+                "v2": "4000",
+                "v2t": "num"
+            },
+            {
+                "t": "btwn",
+                "v": "1",
+                "vt": "num",
+                "v2": "499",
+                "v2t": "num"
+            },
+            {
+                "t": "btwn",
+                "v": "4001",
+                "vt": "num",
+                "v2": "999999",
+                "v2t": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 930,
+        "y": 3180,
+        "wires": [
+            [
+                "23158d6957179ea2"
+            ],
+            [
+                "dda93cd2875fa94d"
+            ],
+            [
+                "dda93cd2875fa94d"
+            ]
+        ]
+    },
+    {
+        "id": "23158d6957179ea2",
+        "type": "function",
+        "z": "5a8fe4a778cdae67",
+        "name": "Standort zum Co2 Gehalt hinzugeben",
+        "func": "// Den variablen Zahlenwert für das Fenster-Auto-CO2 erhalten\nvar fensterAutoCO2Wert = msg.payload; // Annahme: Die Nachricht enthält den CO2-Wert für das Fenster im Automatikmodus\n\n// Überprüfen, ob der empfangene Wert eine gültige Zahl ist\nif (!isNaN(fensterAutoCO2Wert)) {\n    // Kombiniere den String \"Fenster_Auto_co2_Wert\" mit dem variablen Zahlenwert\n    var combinedString = \"Fenster_Auto_co2_Wert: \" + fensterAutoCO2Wert;\n\n    // Erstelle ein JavaScript-Objekt mit dem kombinierten String\n    var jsonOutput = {\n        \"Fenster_Auto_co2_Wert\": fensterAutoCO2Wert\n    };\n\n    // Konvertiere das JavaScript-Objekt in einen JSON-String\n    var jsonString = JSON.stringify(jsonOutput);\n\n    // Gib den JSON-String als Payload zurück\n    return { payload: jsonString };\n} else {\n    // Wenn der empfangene Wert keine gültige Zahl ist, sende eine Fehlermeldung\n    return { payload: \"Fehler: Der empfangene Wert ist keine gültige Zahl.\" };\n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1190,
+        "y": 3120,
+        "wires": [
+            [
+                "1a178cc7b722f750"
+            ]
+        ]
+    },
+    {
+        "id": "dda93cd2875fa94d",
+        "type": "change",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "Fehler",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "Falscher Wert",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1170,
+        "y": 3260,
+        "wires": [
+            [
+                "027c1bbabc9e075d"
+            ]
+        ]
+    },
+    {
+        "id": "027c1bbabc9e075d",
+        "type": "ui_toast",
+        "z": "5a8fe4a778cdae67",
+        "position": "dialog",
+        "displayTime": "3",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 1,
+        "ok": "OK",
+        "cancel": "cancel",
+        "raw": false,
+        "className": "",
+        "topic": "",
+        "name": "",
+        "x": 1470,
+        "y": 3260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8b2accb24155f563",
+        "type": "function",
+        "z": "5a8fe4a778cdae67",
+        "name": "Pruefen ob Zahl",
+        "func": "// JSON-String parsen\nvar jsonData = JSON.parse(msg.payload);\n\n// Extrahiere den CO2-Gehalt aus dem JSON-Objekt\nvar co2Gehalt = parseFloat(jsonData[\"Co2 Gehalt\"]);\n\n// Überprüfen, ob der Wert eine gültige Zahl ist\nif (!isNaN(co2Gehalt)) {\n    // Wenn der Wert eine gültige Zahl ist, sende ihn\n    return { payload: co2Gehalt };\n} else {\n    // Wenn der Wert keine gültige Zahl ist, sende \"false\"\n    return { payload: false };\n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 720,
+        "y": 3180,
+        "wires": [
+            [
+                "0a39ab601f5bbe9c"
+            ]
+        ]
+    },
+    {
+        "id": "b06237edf053e1ed",
+        "type": "mqtt in",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "topic": "SMARTHOME_T&C",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "32b1348dfb32332c",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 2460,
+        "wires": [
+            [
+                "5906b2d9d516dfc6"
+            ]
+        ]
+    },
+    {
+        "id": "5906b2d9d516dfc6",
+        "type": "json",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 430,
+        "y": 2460,
+        "wires": [
+            [
+                "1f327303df39b13f"
+            ]
+        ]
+    },
+    {
+        "id": "1f327303df39b13f",
+        "type": "function",
+        "z": "5a8fe4a778cdae67",
+        "name": "Fensterstatus auslesen",
+        "func": "// JSON-String parsen\nvar jsonData = JSON.parse(msg.payload);\n\n// Überprüfen, ob das Feld \"Fenster Status\" vorhanden ist\nif (jsonData.hasOwnProperty('Sensorwerte')) {\n    // Durchlaufe das Array Sensorwerte, um den Fensterstatus zu finden\n    for (var i = 0; i < jsonData.Sensorwerte.length; i++) {\n        if (jsonData.Sensorwerte[i].hasOwnProperty('Fenster Status')) {\n            // Extrahiere den Fensterstatus\n            var fensterStatus = jsonData.Sensorwerte[i]['Fenster Status'];\n            // Sende den Fensterstatus als Payload zurück\n            return { payload: fensterStatus };\n        }\n    }\n}\n\n// Wenn \"Fenster Status\" nicht gefunden wurde, sende eine Fehlermeldung\nreturn { payload: \"Fenster Status nicht verfügbar\" };\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 690,
+        "y": 2460,
+        "wires": [
+            [
+                "eb91dc974ce746c3"
+            ]
+        ]
+    },
+    {
+        "id": "eb91dc974ce746c3",
+        "type": "switch",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "true"
+            },
+            {
+                "t": "false"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 970,
+        "y": 2460,
+        "wires": [
+            [
+                "6f83ae9df6f0c412"
+            ],
+            [
+                "6f83ae9df6f0c412"
+            ]
+        ]
+    },
+    {
+        "id": "998caf0a57e98f6e",
+        "type": "mqtt in",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "topic": "SMARTHOME_T&C",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "32b1348dfb32332c",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 2600,
+        "wires": [
+            [
+                "a261be93a6a6934e"
+            ]
+        ]
+    },
+    {
+        "id": "b964d4102a82a01d",
+        "type": "function",
+        "z": "5a8fe4a778cdae67",
+        "name": "Temp und Co2 Gehalt auslesen",
+        "func": "// JSON-String parsen\nvar jsonData = JSON.parse(msg.payload);\n\n// Initialisiere Variablen für Temperatur und CO2-Gehalt\nvar temperatur, co2Gehalt;\n\n// Durchlaufe die Sensorwerte, um Temperatur und CO2-Gehalt zu finden\njsonData.Sensorwerte.forEach(function(sensor) {\n    if (sensor.hasOwnProperty(\"Temperatur\")) {\n        temperatur = sensor.Temperatur;\n    }\n    if (sensor.hasOwnProperty(\"CO2-Gehalt\")) {\n        co2Gehalt = sensor[\"CO2-Gehalt\"];\n    }\n});\n\n// Erstelle ein Objekt mit den extrahierten Werten\nvar extractedValues = {\n    \"Temperatur\": temperatur,\n    \"CO2-Gehalt\": co2Gehalt\n};\n\n// Konvertiere das Objekt in einen JSON-String\nvar jsonString = JSON.stringify(extractedValues);\n\n// Sende den JSON-String als Payload zurück\nreturn { payload: jsonString };\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 710,
+        "y": 2600,
+        "wires": [
+            [
+                "755c80a804da2f35"
+            ]
+        ]
+    },
+    {
+        "id": "a261be93a6a6934e",
+        "type": "json",
+        "z": "5a8fe4a778cdae67",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 430,
+        "y": 2600,
+        "wires": [
+            [
+                "b964d4102a82a01d"
+            ]
+        ]
+    },
+    {
+        "id": "755c80a804da2f35",
+        "type": "function",
+        "z": "5a8fe4a778cdae67",
+        "name": "In Datenbank legen , alle 5 Minuten",
+        "func": "// JSON-String parsen\nvar jsonData = JSON.parse(msg.payload);\n\n// Überprüfen, ob das Eingabeobjekt das erwartete Format hat\nif (jsonData && jsonData.hasOwnProperty('Temperatur') && jsonData.hasOwnProperty('CO2-Gehalt')) {\n    // Extrahiere Temperatur und CO2-Gehalt aus dem Eingabeobjekt\n    var temperatur = parseFloat(jsonData['Temperatur']);\n    var co2Gehalt = parseFloat(jsonData['CO2-Gehalt']);\n\n    // Aktuellen Zeitstempel generieren\n    var currentTime = new Date();\n    var timestamp = currentTime.toISOString().slice(0, 19).replace('T', ' ');\n\n    // Zeitpunkt des letzten Eintrags aus dem Kontext lesen\n    var lastEntryTime = context.get('lastEntryTime');\n\n    // Prüfen, ob seit dem letzten Eintrag mehr als 5 Minuten vergangen sind\n    if (!lastEntryTime || (currentTime - lastEntryTime) >= (5 * 60 * 1000)) {\n        // SQL-Abfrage zum Einfügen von Temperatur und CO2-Gehalt in die Datenbank\n        var sqlQuery = \"INSERT INTO messwerte (zeit, temperatur, co2_gehalt) VALUES (?, ?, ?)\";\n\n        // Sende die SQL-Abfrage und die Daten an die nächste Node\n        msg.topic = sqlQuery;\n        msg.payload = [timestamp, temperatur, co2Gehalt];\n\n        // Speichere den aktuellen Zeitpunkt als Zeitpunkt des letzten Eintrags\n        context.set('lastEntryTime', currentTime);\n    } else {\n        // Wenn seit dem letzten Eintrag weniger als 5 Minuten vergangen sind, sende eine Meldung\n        msg.payload = \"Es sind noch keine 5 Minuten seit dem letzten Eintrag vergangen.\";\n    }\n} else {\n    // Wenn das Eingabeobjekt nicht das erwartete Format hat, sende eine Fehlermeldung\n    msg.payload = \"Ungültiges Eingabeformat: Temperatur und CO2-Gehalt fehlen im Payload!\";\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 1,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1080,
+        "y": 2600,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0e4033e450a69e45",
+        "type": "mysql",
+        "z": "5a8fe4a778cdae67",
+        "mydb": "ff62a279e5fd2dea",
+        "name": "",
+        "x": 1330,
+        "y": 2600,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1da99477ded9b018",
+        "type": "remote-access",
+        "z": "5a8fe4a778cdae67",
+        "confignode": "56b7af1e918db522",
+        "name": "",
+        "verbose": 0,
+        "x": 2160,
+        "y": 120,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "860f2057eb7295dd",
+        "type": "function",
+        "z": "5a8fe4a778cdae67",
+        "name": "Alarm Meldung",
+        "func": "// Setze den Titel und den Körper\nvar title = \"Alarm\";\nvar body = \"Bewegung erkannt\";\n\n// Erstelle das JSON-Objekt\nvar json_payload = {\n    \"title\": title,\n    \"body\": body\n};\n\n// Konvertiere in einen JSON-String\nvar json_string = JSON.stringify(json_payload);\n\n// Rückgabe des JSON-Strings\nreturn { payload: json_string };\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1180,
+        "y": 80,
+        "wires": [
+            [
+                "a6ac9d73554990c1"
+            ]
+        ]
+    },
+    {
+        "id": "a6ac9d73554990c1",
+        "type": "remote-notification",
+        "z": "5a8fe4a778cdae67",
+        "confignode": "56b7af1e918db522",
+        "name": "",
+        "notificationTitle": "Alarm",
+        "notificationTitleType": "str",
+        "notificationBody": "Bewegung erkannt",
+        "notificationBodyType": "str",
+        "notificationSound": "nosound",
+        "notificationSoundComputed": "payload.sound",
+        "notificationSoundComputedType": "msg",
+        "output": 1,
+        "x": 1530,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c3b137acb9ca51f9",
+        "type": "ui_spacer",
+        "z": "5a8fe4a778cdae67",
+        "name": "spacer",
+        "group": "c407864ba5aef9cc",
+        "order": 4,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "32b1348dfb32332c",
+        "type": "mqtt-broker",
+        "name": "IOT2050",
+        "broker": "10.3.220.227",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "fc947f7f387b5516",
+        "type": "ui_group",
+        "name": "Alarm",
+        "tab": "22d0da38fe251803",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "0cf9b7d9d5a99d24",
+        "type": "ui_group",
+        "name": "Fenster Wohnzimmer",
+        "tab": "9d56356f831c5921",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "a3696d909edbf986",
+        "type": "ui_group",
+        "name": "Jalousie  Wohnzimmer",
+        "tab": "76afec6406610806",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "64aae649be9e7ccc",
+        "type": "ui_group",
+        "name": "Beleuchtung",
+        "tab": "22d0da38fe251803",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "194b923406906b54",
+        "type": "ui_group",
+        "name": "Info",
+        "tab": "99c4b495c5f715b3",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "c407864ba5aef9cc",
+        "type": "ui_group",
+        "name": "Wohnzimmer",
+        "tab": "99c4b495c5f715b3",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "d0e898639d183d04",
+        "type": "ui_group",
+        "name": "Fenster Automatik",
+        "tab": "9d56356f831c5921",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "5ccc3d4328e061d7",
+        "type": "ui_group",
+        "name": "Automatik Jalousie",
+        "tab": "76afec6406610806",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "ff62a279e5fd2dea",
+        "type": "MySQLdatabase",
+        "name": "TH",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "testdatenbank",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "56b7af1e918db522",
+        "type": "remote-config",
+        "name": "Node-RED UI",
+        "host": "localhost",
+        "protocol": "http",
+        "port": "1880",
+        "baseurl": "/ui",
+        "instancehash": "z9nnlhjyq5yfi4z2t626u6xfgaaxokup4rudo5c90eif0c6lgffk00h8njmfydks",
+        "server": "nodered04.remote-red.com",
+        "region": "de"
+    },
+    {
+        "id": "22d0da38fe251803",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "fa-home",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "9d56356f831c5921",
+        "type": "ui_tab",
+        "name": "Fenster",
+        "icon": "dashboard",
+        "order": 3,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "76afec6406610806",
+        "type": "ui_tab",
+        "name": "Jalousien",
+        "icon": "fa-window-maximize",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "99c4b495c5f715b3",
+        "type": "ui_tab",
+        "name": "Heizung",
+        "icon": "fa-fire",
+        "order": 4,
+        "disabled": false,
+        "hidden": false
+    }
+]
