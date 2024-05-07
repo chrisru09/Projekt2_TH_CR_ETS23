@@ -11,7 +11,7 @@ Sauerstoffgehalt im Wohnzimmer ermitteln und dann ein virtuelles Fenster öffnen
 Wenn die Anlage "scharf" geschaltet wird, soll ein Alarm ausgeben werden, wenn ein Bewegungsmelder ausgelöst wird. 
 Info für  Temperatur der Heizung und etc.
 Visualisierung über Node-RED darstellen.
-Zusätzlich werden die Temperatur und der Co 2-Gehalt in einer Datenbank abgelegt.
+Zusätzlich werden die Temperatur und der Co 2-Gehalt in einer Datenbank abgelegt..
 
 
 Versionsnummer: 1.0
