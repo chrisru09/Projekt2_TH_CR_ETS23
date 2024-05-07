@@ -144,10 +144,9 @@ zeit_alt_read = 0
 #-------------------------------------------------------------------------------------------------
 # Wifi Verbindung
 
-# wlan_ssid = "BZTG-IoT"
-# wlan_passwort = "WerderBremen24"
-wlan_ssid = "FRITZ!Box 5530 R"
-wlan_passwort = "98755767599735437457"
+wlan_ssid = "BZTG-IoT"
+wlan_passwort = "WerderBremen24"
+
 
 
 #Mit Wlan verbinden
@@ -169,8 +168,8 @@ print("--------------------------------------------------------------")
 #-------------------------------------------------------------------------------------------------
 # MQTT Broker Verbindung
 client_id = ubinascii.hexlify(machine.unique_id()) #Eindeutigen namen vergeben
-server = "192.168.178.76"  #MQTT Broker IP
-topic = "SMARTHOME_T&C"	#Topic einstellen
+server = ""  #MQTT Broker IP
+topic = ""	#Topic einstellen
 
 c = MQTTClient(client_id, server) #MQTT Funktion in Variable "c" schreiben
 c.connect()	#Verbindung herstellen
