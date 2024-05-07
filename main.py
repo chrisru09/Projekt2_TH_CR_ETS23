@@ -144,8 +144,8 @@ zeit_alt_read = 0
 #-------------------------------------------------------------------------------------------------
 # Wifi Verbindung
 
-wlan_ssid = "BZTG-IoT"
-wlan_passwort = "WerderBremen24"
+wlan_ssid = ""
+wlan_passwort = ""
 
 
 
